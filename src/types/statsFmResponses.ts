@@ -7,7 +7,18 @@ export interface AlbumsItem {
   streams: number;
   playedMs: number;
   indicator: null;
-  artist: Artist;
+  album: Album;
+}
+
+export interface Album {
+  name: string;
+  image: string;
+  label: string;
+  totalTracks: number;
+  releaseDate: number;
+  genres: string[];
+  artists: Artist[];
+  id: number;
 }
 
 export interface Artists {
@@ -39,7 +50,22 @@ export interface TracksItem {
   streams: number;
   playedMs: number;
   indicator: null;
-  artist: Artist;
+  track: Track;
+}
+
+export interface Track {
+  albums: Data[];
+  artists: Data[];
+  durationMs: number;
+  explicit: boolean;
+  id: number;
+  name: string;
+}
+
+export interface Data {
+  id: number;
+  image?: string;
+  name: string;
 }
 
 export interface Streams {
