@@ -20,46 +20,45 @@ const statsCard = ({
 }) => {
   const artistsWithImages = artists.filter((artist) => artist.image);
   return (
-    <div id="spin-report" className="text-xl py-8">
-      <h2 className="text-4xl font-bold">Your Spin Report</h2>
-      <div className="text-right mb-4">
+    <div id="spin-report" className="text-xl py-24">
+      <h2 className="text-4xl text-purple-500 font-bold leading-none">Your Spin Report</h2>
+      <div className="text-sm opacity-40 leading-3">spinreport.heismauri.com</div>
+      <div className="text-right mb-3">
         {formatDate(dateRange.from)} - {formatDate(dateRange.to)}
       </div>
-      <ul className="flex flex-row gap-2 mb-4">
-        {artistsWithImages.slice(0, 3).map((artist, index) => (
+      {artistsWithImages.length > 0 && (
+        <ul className="flex flex-row gap-2 mb-3">
+          {artistsWithImages.slice(0, 3).map((artist, index) => (
             <li key={index} className="basis-1/3">
-              <img
-                className="border-2 border-gray-300 rounded-md aspect-square object-cover"
-                src={artist.image}
-                alt={artist.name}
-              />
+              <img className="rounded-md aspect-square object-cover shadow-md" src={artist.image} alt={artist.name} />
             </li>
           ))}
-      </ul>
-      <div className="flex gap-8 text-center items-center justify-center">
+        </ul>
+      )}
+      <div className="flex gap-8 text-center items-center justify-center mb-3">
         <div>
-          <div className="text-4xl leading-none">{Math.round(minutes)}</div>
-          <div>Minutes</div>
+          <div className="text-3xl leading-none">{Math.round(minutes)}</div>
+          <div className="text-sm">Minutes</div>
         </div>
         <div>
-          <div className="text-4xl leading-none">{streams}</div>
-          <div>Streams</div>
+          <div className="text-3xl leading-none">{streams}</div>
+          <div className="text-sm">Streams</div>
         </div>
       </div>
-      <div className="text-2xl font-bold">Top 5 tracks:</div>
-      <ol className="list-decimal list-inside mb-4 leading-none">
+      <div className="font-bold text-purple-500">Top 5 tracks:</div>
+      <ol className="list-decimal list-inside mb-3 leading-4.5">
         {tracks.slice(0, 5).map((track, index) => (
           <li key={index}>{track}</li>
         ))}
       </ol>
-      <div className="text-2xl font-bold">Top 5 artists:</div>
-      <ol className="list-decimal list-inside mb-4 leading-none">
+      <div className="font-bold text-purple-500">Top 5 artists:</div>
+      <ol className="list-decimal list-inside mb-3 leading-4.5">
         {artists.slice(0, 5).map((artist, index) => (
           <li key={index}>{artist.name}</li>
         ))}
       </ol>
-      <div className="text-2xl font-bold">Top 5 albums:</div>
-      <ol className="list-decimal list-inside mb-4 leading-none">
+      <div className="font-bold text-purple-500">Top 5 albums:</div>
+      <ol className="list-decimal list-inside mb-3 leading-4.5">
         {albums.slice(0, 5).map((album, index) => (
           <li key={index}>{album}</li>
         ))}

@@ -58,7 +58,7 @@ const StatsForm = () => {
         }, 500);
       })
       .catch((error) => {
-        alert("Error fetching stats. Please try again.");
+        alert("Error fetching stats. Please try again. " + error.message);
         setLoading(false);
         console.error("Error fetching stats:", error);
       });
@@ -73,7 +73,7 @@ const StatsForm = () => {
             type="text"
             name="username"
             placeholder="Enter your username"
-            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:text-gray-100"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-gray-200 disabled:text-gray-500"
             required
             disabled={loading}
           />
@@ -82,12 +82,12 @@ const StatsForm = () => {
           <span className="font-medium text-gray-700">Service</span>
           <div className="flex flex-row gap-4">
             <label className="flex items-center gap-2">
-              <input type="radio" name="service" value="statsfm" defaultChecked />
+              <input type="radio" name="service" value="statsfm" defaultChecked disabled={loading} className="disabled:text-gray-500" />
               stats.fm
             </label>
             <label className="flex items-center gap-2">
-              <input type="radio" name="service" value="lastfm" />
-              Last.fm
+              <input type="radio" name="service" value="lastfm" disabled={loading} className="disabled:text-gray-500" />
+              Last.fm (Beta)
             </label>
           </div>
         </label>
@@ -95,11 +95,11 @@ const StatsForm = () => {
           <span className="font-medium text-gray-700">Date Range</span>
           <div className="flex flex-row gap-4">
             <label className="flex items-center gap-2">
-              <input type="radio" name="dateRange" value="lastWeek" defaultChecked />
+              <input type="radio" name="dateRange" value="lastWeek" defaultChecked disabled={loading} className="disabled:text-gray-500" />
               Last week
             </label>
             <label className="flex items-center gap-2">
-              <input type="radio" name="dateRange" value="lastMonth" />
+              <input type="radio" name="dateRange" value="lastMonth" disabled={loading} className="disabled:text-gray-500" />
               Last month
             </label>
           </div>

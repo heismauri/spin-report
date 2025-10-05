@@ -2,10 +2,12 @@ import { getTopAlbums, getTopArtists, getTopTracks, getStreams } from "@/service
 import { TopStats } from "@/types/Stats";
 
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
-  const topAlbums = await getTopAlbums(username, range);
-  const topArtists = await getTopArtists(username, range);
-  const topTracks = await getTopTracks(username, range);
-  const streamsData = await getStreams(username, range);
+  const [topAlbums, topArtists, topTracks, streamsData] = await Promise.all([
+    getTopAlbums(username, range),
+    getTopArtists(username, range),
+    getTopTracks(username, range),
+    getStreams(username, range),
+  ]);
 
   const albums = topAlbums.items.slice(0, top).map(({ album }) => album.name);
   const artists = topArtists.items.slice(0, top).map(({ artist }) => ({ name: artist.name, image: artist.image }));
