@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { VT323 } from "next/font/google";
-// @ts-ignore
-import "./globals.css";
+
+import "@/app/globals.css";
 
 const vt323 = VT323({
   weight: "400",
