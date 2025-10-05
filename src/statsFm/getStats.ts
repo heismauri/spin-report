@@ -3,9 +3,9 @@ import { TopStats } from "@/types/Stats";
 
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
   const [topAlbums, topArtists, topTracks, streamsData] = await Promise.all([
-    getTopAlbums(username, range),
-    getTopArtists(username, range),
-    getTopTracks(username, range),
+    getTopAlbums(username, range, top),
+    getTopArtists(username, range, top),
+    getTopTracks(username, range, top),
     getStreams(username, range),
   ]);
 

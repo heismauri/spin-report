@@ -1,8 +1,8 @@
 import { Albums, Artists, Tracks, Streams } from "@/types/statsFmResponses";
 
-const getTopAlbums = async (username: string, range: { from: Date; to: Date }): Promise<Albums> => {
+const getTopAlbums = async (username: string, range: { from: Date; to: Date }, limit: number): Promise<Albums> => {
   const response = await fetch(
-    `https://api.stats.fm/api/v1/users/${username}/top/albums?after=${range.from.getTime()}&before=${range.to.getTime()}`
+    `https://api.stats.fm/api/v1/users/${username}/top/albums?after=${range.from.getTime()}&before=${range.to.getTime()}&limit=${limit}`
   );
   if (!response.ok) {
     throw new Error(`Error fetching top albums: ${response.statusText}`);
@@ -11,9 +11,9 @@ const getTopAlbums = async (username: string, range: { from: Date; to: Date }): 
   return data;
 };
 
-const getTopArtists = async (username: string, range: { from: Date; to: Date }): Promise<Artists> => {
+const getTopArtists = async (username: string, range: { from: Date; to: Date }, limit: number): Promise<Artists> => {
   const response = await fetch(
-    `https://api.stats.fm/api/v1/users/${username}/top/artists?after=${range.from.getTime()}&before=${range.to.getTime()}`
+    `https://api.stats.fm/api/v1/users/${username}/top/artists?after=${range.from.getTime()}&before=${range.to.getTime()}&limit=${limit}`
   );
   if (!response.ok) {
     throw new Error(`Error fetching top artists: ${response.statusText}`);
@@ -22,9 +22,9 @@ const getTopArtists = async (username: string, range: { from: Date; to: Date }):
   return data;
 };
 
-const getTopTracks = async (username: string, range: { from: Date; to: Date }): Promise<Tracks> => {
+const getTopTracks = async (username: string, range: { from: Date; to: Date }, limit: number): Promise<Tracks> => {
   const response = await fetch(
-    `https://api.stats.fm/api/v1/users/${username}/top/tracks?after=${range.from.getTime()}&before=${range.to.getTime()}`
+    `https://api.stats.fm/api/v1/users/${username}/top/tracks?after=${range.from.getTime()}&before=${range.to.getTime()}&limit=${limit}`
   );
   if (!response.ok) {
     throw new Error(`Error fetching top tracks: ${response.statusText}`);
