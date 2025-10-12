@@ -1,3 +1,5 @@
+import { TopStats } from "@/types/Stats";
+
 const formatDate = (date: Date) => {
   const month = date.toLocaleString("default", { month: "long" });
   return `${date.getDate()} ${month}`;
@@ -10,14 +12,7 @@ const statsCard = ({
   minutes,
   streams,
   dateRange
-}: {
-  albums: string[];
-  artists: { name: string; image?: string }[];
-  tracks: string[];
-  minutes: number;
-  streams: number;
-  dateRange: { from: Date; to: Date };
-}) => {
+}: TopStats) => {
   const artistsWithImages = artists.filter((artist) => artist.image);
   return (
     <div id="spin-report" className="text-xl py-24">
@@ -48,7 +43,7 @@ const statsCard = ({
       <div className="font-bold text-purple-500">Top 5 tracks:</div>
       <ol className="list-decimal list-inside mb-3 leading-4.5">
         {tracks.slice(0, 5).map((track, index) => (
-          <li key={index}>{track}</li>
+          <li key={index}>{track.name} <span className="text-gray-500">[{track.playcount} plays]</span></li>
         ))}
       </ol>
       <div className="font-bold text-purple-500">Top 5 artists:</div>

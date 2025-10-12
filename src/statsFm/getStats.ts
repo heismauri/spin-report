@@ -11,7 +11,7 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
 
   const albums = topAlbums.items.slice(0, top).map(({ album }) => album.name);
   const artists = topArtists.items.slice(0, top).map(({ artist }) => ({ name: artist.name, image: artist.image }));
-  const tracks = topTracks.items.slice(0, top).map(({ track }) => track.name);
+  const tracks = topTracks.items.slice(0, top).map((track) => ({ name: track.track.name, playcount: track.streams }));
   const minutes = streamsData.items.playedMs.sum / 60000;
   const streams = streamsData.items.playedMs.count;
 

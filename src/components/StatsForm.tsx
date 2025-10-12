@@ -4,6 +4,7 @@ import Loader from "@/components/Loader";
 import StatsCard from "@/components/StatsCard";
 import { getStats as getLastFmStats } from "@/lastFm/getStats";
 import { getStats as getStatsFmStats } from "@/statsFm/getStats";
+import { TopStats } from "@/types/Stats";
 import { useState } from "react";
 
 const getLastWeekRange = () => {
@@ -31,15 +32,7 @@ const getLastMonthRange = () => {
 
 const StatsForm = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [stats, setStats] = useState<{
-    albums: string[];
-    artists: { name: string; image?: string }[];
-    tracks: string[];
-    minutes: number;
-    streams: number;
-    dateRange: { from: Date; to: Date };
-  } | null>(null);
+  const [stats, setStats] = useState<TopStats | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
