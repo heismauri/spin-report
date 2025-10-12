@@ -1,6 +1,26 @@
 import { getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
 import { TopStats } from "@/types/Stats";
 
+const getTrackMinutes = async (
+  username: string,
+  artist: string,
+  trackName: string,
+  firstTry = true
+): Promise<number> => {
+  try {
+    const trackInfo = await getTrackInfo(username, artist, trackName);
+    if (trackInfo && trackInfo.track && trackInfo.track.duration) {
+      return parseInt(trackInfo.track.duration, 10) / 60000;
+    }
+    return 0;
+  } catch (error) {
+    if (firstTry) {
+      return getTrackMinutes(username, artist, trackName, false);
+    }
+    return 0;
+  }
+};
+
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
   const [topAlbums, topArtists, topTracks] = await Promise.all([
     getTopAlbums(username, range),
@@ -10,11 +30,7 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
 
   const minutesArray = await Promise.all(
     topTracks.weeklytrackchart.track.map(async (track) => {
-      const trackInfo = await getTrackInfo(username, track.artist["#text"], track.name);
-      if (trackInfo && trackInfo.track && trackInfo.track.duration) {
-        return (parseInt(track.playcount, 10) * parseInt(trackInfo.track.duration, 10)) / 60000;
-      }
-      return 0;
+      return getTrackMinutes(username, track.artist.name, track.name);
     })
   );
 
