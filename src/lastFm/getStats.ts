@@ -7,18 +7,17 @@ const getTrackMinutes = async (
   trackName: string,
   firstTry = true
 ): Promise<number> => {
-  const defaultMinutes = 3;
   try {
     const trackInfo = await getTrackInfo(username, artist, trackName);
     if (trackInfo && trackInfo.track && trackInfo.track.duration) {
-      return parseInt(trackInfo.track.duration, 10) / 60000 || defaultMinutes;
+      return parseInt(trackInfo.track.duration, 10) / 60000;
     }
-    return defaultMinutes;
+    return 0;
   } catch (error) {
     if (firstTry) {
       return getTrackMinutes(username, artist, trackName, false);
     }
-    return defaultMinutes;
+    return 0;
   }
 };
 
@@ -32,12 +31,16 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
   const minutesArray = await Promise.all(
     topTracks.weeklytrackchart.track.map(async (track) => {
       const trackMinutes = await getTrackMinutes(username, track.artist["#text"], track.name);
-      return trackMinutes * parseInt(track.playcount, 10);
+      return (trackMinutes || 3) * parseInt(track.playcount, 10);
     })
   );
 
-  const albums = topAlbums.weeklyalbumchart.album.slice(0, top).map((album) => ({ name: album.name, playcount: parseInt(album.playcount, 10) }));
-  const artists = topArtists.weeklyartistchart.artist.slice(0, top).map((artist) => ({ name: artist.name, playcount: parseInt(artist.playcount, 10) }));
+  const albums = topAlbums.weeklyalbumchart.album
+    .slice(0, top)
+    .map((album) => ({ name: album.name, playcount: parseInt(album.playcount, 10) }));
+  const artists = topArtists.weeklyartistchart.artist
+    .slice(0, top)
+    .map((artist) => ({ name: artist.name, playcount: parseInt(artist.playcount, 10) }));
   const tracks = topTracks.weeklytrackchart.track
     .slice(0, top)
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
