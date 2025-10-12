@@ -66,7 +66,7 @@ const StatsForm = () => {
             type="text"
             name="username"
             placeholder="Enter your username"
-            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-gray-200 disabled:text-gray-500"
+            className="border border-gray-300 dark:border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-gray-200 disabled:text-gray-500"
             required
             disabled={loading}
           />
@@ -134,7 +134,6 @@ const StatsForm = () => {
               albums={stats.albums}
               artists={stats.artists}
               tracks={stats.tracks}
-              minutes={stats.minutes}
               streams={stats.streams}
               dateRange={stats.dateRange}
             />

@@ -5,7 +5,7 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
   const [topAlbums, topArtists, topTracks] = await Promise.all([
     getTopAlbums(username, range),
     getTopArtists(username, range),
-    getTopTracks(username, range),
+    getTopTracks(username, range)
   ]);
 
   const minutesArray = await Promise.all(
@@ -20,11 +20,24 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
 
   const albums = topAlbums.weeklyalbumchart.album.slice(0, top).map((album) => album.name);
   const artists = topArtists.weeklyartistchart.artist.slice(0, top).map((artist) => ({ name: artist.name }));
-  const tracks = topTracks.weeklytrackchart.track.slice(0, top).map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
+  const tracks = topTracks.weeklytrackchart.track
+    .slice(0, top)
+    .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
   const minutes = minutesArray.reduce((acc, mins) => acc + (mins || 3), 0);
-  const streams = topTracks.weeklytrackchart.track.reduce((acc, track) => acc + parseInt(track.playcount, 10), 0);
+  const count = topTracks.weeklytrackchart.track.reduce((acc, track) => acc + parseInt(track.playcount, 10), 0);
 
-  return { albums, artists, streams, minutes, tracks, dateRange: range };
+  return {
+    albums,
+    artists,
+    streams: {
+      minutes,
+      count,
+      artists: topArtists.weeklyartistchart.artist.length,
+      tracks: topTracks.weeklytrackchart.track.length
+    },
+    tracks,
+    dateRange: range
+  };
 };
 
 export { getStats };

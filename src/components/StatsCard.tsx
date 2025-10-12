@@ -9,7 +9,6 @@ const statsCard = ({
   albums,
   artists,
   tracks,
-  minutes,
   streams,
   dateRange
 }: TopStats) => {
@@ -32,12 +31,20 @@ const statsCard = ({
       )}
       <div className="flex gap-8 text-center items-center justify-center mb-3">
         <div>
-          <div className="text-3xl leading-none">{Math.round(minutes)}</div>
+          <div className="text-3xl leading-none">{Math.round(streams.minutes)}</div>
           <div className="text-sm">Minutes</div>
         </div>
         <div>
-          <div className="text-3xl leading-none">{streams}</div>
+          <div className="text-3xl leading-none">{streams.count}</div>
           <div className="text-sm">Streams</div>
+        </div>
+        <div>
+          <div className="text-3xl leading-none">{streams.tracks}</div>
+          <div className="text-sm">Tracks</div>
+        </div>
+        <div>
+          <div className="text-3xl leading-none">{streams.artists}</div>
+          <div className="text-sm">Artists</div>
         </div>
       </div>
       <div className="font-bold text-purple-500">Top 5 tracks:</div>
