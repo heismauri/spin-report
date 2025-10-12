@@ -7,17 +7,18 @@ const getTrackMinutes = async (
   trackName: string,
   firstTry = true
 ): Promise<number> => {
+  const defaultMinutes = 3;
   try {
     const trackInfo = await getTrackInfo(username, artist, trackName);
     if (trackInfo && trackInfo.track && trackInfo.track.duration) {
-      return parseInt(trackInfo.track.duration, 10) / 60000;
+      return parseInt(trackInfo.track.duration, 10) / 60000 || defaultMinutes;
     }
-    return 0;
+    return defaultMinutes;
   } catch (error) {
     if (firstTry) {
       return getTrackMinutes(username, artist, trackName, false);
     }
-    return 0;
+    return defaultMinutes;
   }
 };
 
@@ -30,7 +31,8 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
 
   const minutesArray = await Promise.all(
     topTracks.weeklytrackchart.track.map(async (track) => {
-      return getTrackMinutes(username, track.artist.name, track.name);
+      const trackMinutes = await getTrackMinutes(username, track.artist["#text"], track.name);
+      return trackMinutes * parseInt(track.playcount, 10);
     })
   );
 
@@ -39,7 +41,7 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
   const tracks = topTracks.weeklytrackchart.track
     .slice(0, top)
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
-  const minutes = minutesArray.reduce((acc, mins) => acc + (mins || 3), 0);
+  const minutes = minutesArray.reduce((acc, mins) => acc + mins, 0);
   const count = topTracks.weeklytrackchart.track.reduce((acc, track) => acc + parseInt(track.playcount, 10), 0);
 
   return {
