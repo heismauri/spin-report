@@ -119,7 +119,7 @@ const StatsForm = () => {
         </label>
         <button
           type="submit"
-          className="bg-purple-500 text-white rounded-md p-2 hover:bg-purple-400 transition not-disabled:cursor-pointer disabled:bg-gray-300 dark:disabled:bg-gray-700"
+          className="bg-purple-500 text-white rounded-md p-2 hover:bg-purple-400 transition not-disabled:cursor-pointer disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:opacity-70"
           disabled={loading}
         >
           Find out about my spins

@@ -9,8 +9,10 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
     getStreams(username, range)
   ]);
 
-  const albums = topAlbums.items.slice(0, top).map(({ album }) => album.name);
-  const artists = topArtists.items.slice(0, top).map(({ artist }) => ({ name: artist.name, image: artist.image }));
+  const albums = topAlbums.items.slice(0, top).map((album) => ({ name: album.album.name, playcount: album.streams }));
+  const artists = topArtists.items
+    .slice(0, top)
+    .map((artist) => ({ name: artist.artist.name, image: artist.artist.image, playcount: artist.streams }));
   const tracks = topTracks.items.slice(0, top).map((track) => ({ name: track.track.name, playcount: track.streams }));
   const minutes = streamsData.items.playedMs.sum / 60000;
   const count = streamsData.items.playedMs.count;

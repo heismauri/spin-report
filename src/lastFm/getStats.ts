@@ -34,8 +34,8 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
     })
   );
 
-  const albums = topAlbums.weeklyalbumchart.album.slice(0, top).map((album) => album.name);
-  const artists = topArtists.weeklyartistchart.artist.slice(0, top).map((artist) => ({ name: artist.name }));
+  const albums = topAlbums.weeklyalbumchart.album.slice(0, top).map((album) => ({ name: album.name, playcount: parseInt(album.playcount, 10) }));
+  const artists = topArtists.weeklyartistchart.artist.slice(0, top).map((artist) => ({ name: artist.name, playcount: parseInt(artist.playcount, 10) }));
   const tracks = topTracks.weeklytrackchart.track
     .slice(0, top)
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
