@@ -68,7 +68,7 @@ const StatsForm = () => {
     <>
       <form className="flex flex-col gap-4 w-full max-w-md text-xl" onSubmit={handleSubmit}>
         <label className="flex flex-col">
-          <span className="font-medium text-gray-700">Username</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">Username</span>
           <input
             type="text"
             name="username"
@@ -79,10 +79,17 @@ const StatsForm = () => {
           />
         </label>
         <label className="flex flex-col">
-          <span className="font-medium text-gray-700">Service</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">Service</span>
           <div className="flex flex-row gap-4">
             <label className="flex items-center gap-2">
-              <input type="radio" name="service" value="statsfm" defaultChecked disabled={loading} className="disabled:text-gray-500" />
+              <input
+                type="radio"
+                name="service"
+                value="statsfm"
+                defaultChecked
+                disabled={loading}
+                className="disabled:text-gray-500"
+              />
               stats.fm
             </label>
             <label className="flex items-center gap-2">
@@ -92,21 +99,34 @@ const StatsForm = () => {
           </div>
         </label>
         <label className="flex flex-col">
-          <span className="font-medium text-gray-700">Date Range</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">Date Range</span>
           <div className="flex flex-row gap-4">
             <label className="flex items-center gap-2">
-              <input type="radio" name="dateRange" value="lastWeek" defaultChecked disabled={loading} className="disabled:text-gray-500" />
+              <input
+                type="radio"
+                name="dateRange"
+                value="lastWeek"
+                defaultChecked
+                disabled={loading}
+                className="disabled:text-gray-500"
+              />
               Last week
             </label>
             <label className="flex items-center gap-2">
-              <input type="radio" name="dateRange" value="lastMonth" disabled={loading} className="disabled:text-gray-500" />
+              <input
+                type="radio"
+                name="dateRange"
+                value="lastMonth"
+                disabled={loading}
+                className="disabled:text-gray-500"
+              />
               Last month
             </label>
           </div>
         </label>
         <button
           type="submit"
-          className="bg-purple-500 text-white rounded-md p-2 hover:bg-purple-400 transition not-disabled:cursor-pointer disabled:bg-gray-300"
+          className="bg-purple-500 text-white rounded-md p-2 hover:bg-purple-400 transition not-disabled:cursor-pointer disabled:bg-gray-300 dark:disabled:bg-gray-700"
           disabled={loading}
         >
           Find out about my spins
@@ -116,7 +136,6 @@ const StatsForm = () => {
         <Loader />
       ) : (
         <>
-          {error && <p className="text-red-500">{error}</p>}
           {stats && (
             <StatsCard
               albums={stats.albums}
