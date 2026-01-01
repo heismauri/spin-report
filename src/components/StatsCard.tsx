@@ -30,10 +30,12 @@ const statsCard = ({
         </ul>
       )}
       <div className="flex gap-8 text-center items-center justify-center mb-3">
-        <div>
-          <div className="text-3xl leading-none">{Math.round(streams.minutes)}</div>
-          <div className="text-sm">Minutes</div>
-        </div>
+        {streams.minutes && (
+          <div>
+            <div className="text-3xl leading-none">{Math.round(streams.minutes)}</div>
+            <div className="text-sm">Minutes</div>
+          </div>
+        )}
         <div>
           <div className="text-3xl leading-none">{streams.count}</div>
           <div className="text-sm">Streams</div>
