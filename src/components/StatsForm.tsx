@@ -30,6 +30,24 @@ const getLastMonthRange = () => {
   return { from: firstDayOfLastMonth, to: lastDayOfLastMonth };
 };
 
+const getLastYearRange = () => {
+  const today = new Date();
+  const lastYearStart = new Date(today.getFullYear() - 1, 0, 1, 0, 0, 0);
+  const lastYearEnd = new Date(today.getFullYear() - 1, 11, 31, 23, 59, 59, 999);
+  return { from: lastYearStart, to: lastYearEnd };
+};
+
+const getDateRange = (rangeType: string) => {
+  switch (rangeType) {
+    case "lastYear":
+      return getLastYearRange();
+    case "lastMonth":
+      return getLastMonthRange();
+    default:
+      return getLastWeekRange();
+  }
+}
+
 const StatsForm = () => {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<TopStats | null>(null);
@@ -39,7 +57,7 @@ const StatsForm = () => {
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username") as string;
     const service = formData.get("service") as string;
-    const dateRange = (formData.get("dateRange") as string) === "lastMonth" ? getLastMonthRange() : getLastWeekRange();
+    const dateRange = getDateRange(formData.get("dateRange") as string);
     console.log("Fetching stats for user:", username);
     setStats(null);
     setLoading(true);
@@ -114,6 +132,16 @@ const StatsForm = () => {
                 className="disabled:text-gray-500"
               />
               Last month
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="dateRange"
+                value="lastYear"
+                disabled={loading}
+                className="disabled:text-gray-500"
+              />
+              Last year
             </label>
           </div>
         </label>
