@@ -3,10 +3,10 @@ import { TopStats } from "@/types/Stats";
 
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
   const [topAlbums, topArtists, topTracks, streamsData] = await Promise.all([
-    // +1 is to account for current bug in Stats.fm API
-    getTopAlbums(username, range, top + 1),
-    getTopArtists(username, range, top),
-    getTopTracks(username, range, top),
+    // *3 is to account for current bug in Stats.fm API
+    getTopAlbums(username, range, top * 3),
+    getTopArtists(username, range, top * 3),
+    getTopTracks(username, range, top * 3),
     getStreams(username, range)
   ]);
 
