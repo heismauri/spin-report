@@ -1,4 +1,4 @@
-import { getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
+import { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
 import { TopStats } from "@/types/Stats";
 
 const getTrackMinutes = async (
@@ -22,10 +22,11 @@ const getTrackMinutes = async (
 };
 
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
-  const [topAlbums, topArtists, topTracks] = await Promise.all([
+  const [topAlbums, topArtists, topTracks, recentTracks] = await Promise.all([
     getTopAlbums(username, range),
     getTopArtists(username, range),
-    getTopTracks(username, range)
+    getTopTracks(username, range),
+    getRecentTracks(username, range)
   ]);
 
   /*
@@ -48,6 +49,11 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
   // const minutes = minutesArray.reduce((acc, mins) => acc + mins, 0);
   const count = topTracks.weeklytrackchart.track.reduce((acc, track) => acc + parseInt(track.playcount, 10), 0);
+  const allImages = recentTracks.recenttracks.track.map((track) => ({ name: track.name, image: track.image.find((img) => img.size === "large")?.["#text"] || "" }));
+  const images = tracks.map((t) => {
+    const match = allImages.find((img) => img.name === t.name);
+    return match ? match.image : "";
+  }).filter((img) => img !== "");
 
   return {
     albums,
@@ -59,7 +65,8 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
       tracks: topTracks.weeklytrackchart.track.length
     },
     tracks,
-    dateRange: range
+    dateRange: range,
+    images
   };
 };
 

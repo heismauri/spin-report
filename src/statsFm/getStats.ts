@@ -28,7 +28,8 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
       artists: streamsData.items.cardinality.artists
     },
     tracks,
-    dateRange: range
+    dateRange: range,
+    images: artists.map((a) => a.image).filter((img) => img !== undefined)
   };
 };
 

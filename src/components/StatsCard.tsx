@@ -10,9 +10,9 @@ const statsCard = ({
   artists,
   tracks,
   streams,
-  dateRange
+  dateRange,
+  images = []
 }: TopStats) => {
-  const artistsWithImages = artists.filter((artist) => artist.image);
   return (
     <div id="spin-report" className="text-xl py-24">
       <h2 className="text-4xl text-purple-500 font-bold leading-none">Your Spin Report</h2>
@@ -20,11 +20,11 @@ const statsCard = ({
       <div className="text-right mb-3">
         {formatDate(dateRange.from)} - {formatDate(dateRange.to)}
       </div>
-      {artistsWithImages.length > 0 && (
+      {images.length > 0 && (
         <ul className="flex flex-row gap-2 mb-3">
-          {artistsWithImages.slice(0, 3).map((artist, index) => (
+          {images.slice(0, 3).map((image, index) => (
             <li key={index} className="basis-1/3">
-              <img className="rounded-md aspect-square object-cover shadow-md" src={artist.image} alt={artist.name} />
+              <img className="rounded-md aspect-square object-cover shadow-md" src={image} />
             </li>
           ))}
         </ul>

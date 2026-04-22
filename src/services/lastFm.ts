@@ -1,4 +1,22 @@
-import { TrackInfo, WeeklyAlbum, WeeklyArtist, WeeklyTrack } from "@/types/lastFmResponses";
+import { RecentTracks, TrackInfo, WeeklyAlbum, WeeklyArtist, WeeklyTrack } from "@/types/lastFmResponses";
+
+const getRecentTracks = async (username: string, range: { from: Date; to: Date }): Promise<RecentTracks> => {
+  const url = new URL("https://ws.audioscrobbler.com/2.0/");
+  url.searchParams.set("method", "user.getrecenttracks");
+  url.searchParams.set("user", username);
+  url.searchParams.set("api_key", process.env.NEXT_PUBLIC_LASTFM_API_KEY || "");
+  url.searchParams.set("format", "json");
+  url.searchParams.set("from", Math.floor(range.from.getTime() / 1000).toString());
+  url.searchParams.set("to", Math.floor(range.to.getTime() / 1000).toString());
+  url.searchParams.set("limit", "1000");
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    throw new Error(`Error fetching recent tracks: ${await response.text()}`);
+  }
+  const data: RecentTracks = await response.json();
+  console.log(data);
+  return data;
+};
 
 const getTopAlbums = async (username: string, range: { from: Date; to: Date }): Promise<WeeklyAlbum> => {
   const response = await fetch(
@@ -9,7 +27,7 @@ const getTopAlbums = async (username: string, range: { from: Date; to: Date }): 
   }
   const data: WeeklyAlbum = await response.json();
   return data;
-}
+};
 
 const getTopArtists = async (username: string, range: { from: Date; to: Date }): Promise<WeeklyArtist> => {
   const response = await fetch(
@@ -31,7 +49,7 @@ const getTopTracks = async (username: string, range: { from: Date; to: Date }): 
   }
   const data: WeeklyTrack = await response.json();
   return data;
-}
+};
 
 const getTrackInfo = async (username: string, artist: string, track: string): Promise<TrackInfo> => {
   const response = await fetch(
@@ -44,4 +62,4 @@ const getTrackInfo = async (username: string, artist: string, track: string): Pr
   return data;
 };
 
-export { getTopAlbums, getTopArtists, getTopTracks, getTrackInfo };
+export { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks, getTrackInfo };

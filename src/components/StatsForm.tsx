@@ -164,6 +164,7 @@ const StatsForm = () => {
               tracks={stats.tracks}
               streams={stats.streams}
               dateRange={stats.dateRange}
+              images={stats.images}
             />
           )}
         </>

@@ -1,3 +1,9 @@
+export interface RecentTracks {
+  recenttracks: {
+    track: Track[];
+  };
+}
+
 export interface WeeklyTrack {
   weeklytrackchart: Weeklytrackchart;
 }
