@@ -1,4 +1,4 @@
-import { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
+import { getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
 import { TopStats } from "@/types/Stats";
 
 const getTrackMinutes = async (
@@ -22,11 +22,10 @@ const getTrackMinutes = async (
 };
 
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
-  const [topAlbums, topArtists, topTracks, recentTracks] = await Promise.all([
+  const [topAlbums, topArtists, topTracks] = await Promise.all([
     getTopAlbums(username, range),
     getTopArtists(username, range),
-    getTopTracks(username, range),
-    getRecentTracks(username, range)
+    getTopTracks(username, range)
   ]);
 
   /*
@@ -38,22 +37,17 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
   );
   */
 
-  const albums = topAlbums.weeklyalbumchart.album
+  const albums = topAlbums
     .slice(0, top)
     .map((album) => ({ name: album.name, playcount: parseInt(album.playcount, 10) }));
-  const artists = topArtists.weeklyartistchart.artist
+  const artists = topArtists
     .slice(0, top)
     .map((artist) => ({ name: artist.name, playcount: parseInt(artist.playcount, 10) }));
-  const tracks = topTracks.weeklytrackchart.track
+  const tracks = topTracks
     .slice(0, top)
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
   // const minutes = minutesArray.reduce((acc, mins) => acc + mins, 0);
-  const count = topTracks.weeklytrackchart.track.reduce((acc, track) => acc + parseInt(track.playcount, 10), 0);
-  const allImages = recentTracks.recenttracks.track.map((track) => ({ name: track.name, image: track.image.find((img) => img.size === "large")?.["#text"] || "" }));
-  const images = tracks.map((t) => {
-    const match = allImages.find((img) => img.name === t.name);
-    return match ? match.image : "";
-  }).filter((img) => img !== "");
+  const count = topTracks.reduce((acc, track) => acc + parseInt(track.playcount, 10), 0);
 
   return {
     albums,
@@ -61,12 +55,11 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
     streams: {
       // minutes,
       count,
-      artists: topArtists.weeklyartistchart.artist.length,
-      tracks: topTracks.weeklytrackchart.track.length
+      artists: topArtists.length,
+      tracks: topTracks.length
     },
     tracks,
-    dateRange: range,
-    images
+    dateRange: range
   };
 };
 
