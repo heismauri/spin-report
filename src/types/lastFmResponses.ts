@@ -1,21 +1,18 @@
 export interface WeeklyAlbum {
   weeklyalbumchart: {
     "album": ExtendedAlbum[];
-    "@attr": Pagination;
   };
 }
 
 export interface WeeklyArtist {
   weeklyartistchart: {
     "artist": ExtendedArtist[];
-    "@attr": Pagination;
   };
 }
 
 export interface WeeklyTrack {
   weeklytrackchart: {
     "track": Track[];
-    "@attr": Pagination;
   };
 }
 
