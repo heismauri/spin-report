@@ -1,3 +1,10 @@
+export interface RecentTracks {
+  recenttracks: {
+    track: Track[];
+    "@attr": Pagination;
+  };
+}
+
 export interface WeeklyAlbum {
   weeklyalbumchart: {
     "album": ExtendedAlbum[];

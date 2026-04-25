@@ -1,12 +1,34 @@
 import {
   ExtendedAlbum,
   ExtendedArtist,
+  RecentTracks,
   Track,
   TrackInfo,
   WeeklyAlbum,
   WeeklyArtist,
   WeeklyTrack
 } from "@/types/lastFmResponses";
+
+const getRecentTracks = async (username: string, range: { from: Date; to: Date }, page = 1): Promise<Track[]> => {
+  const url = new URL("https://ws.audioscrobbler.com/2.0/");
+  url.searchParams.set("method", "user.getrecenttracks");
+  url.searchParams.set("api_key", process.env.NEXT_PUBLIC_LASTFM_API_KEY || "");
+  url.searchParams.set("format", "json");
+  url.searchParams.set("user", username);
+  url.searchParams.set("from", Math.floor(range.from.getTime() / 1000).toString());
+  url.searchParams.set("to", Math.floor(range.to.getTime() / 1000).toString());
+  url.searchParams.set("page", page.toString());
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    throw new Error(`Error fetching recent tracks: ${await response.text()}`);
+  }
+  const data: RecentTracks = await response.json();
+  if (parseInt(data.recenttracks["@attr"].page, 10) < parseInt(data.recenttracks["@attr"].totalPages, 10)) {
+    const nextPageData = await getRecentTracks(username, range, page + 1);
+    return [...data.recenttracks.track, ...nextPageData];
+  }
+  return data.recenttracks.track;
+};
 
 const getTopAlbums = async (username: string, range: { from: Date; to: Date }): Promise<ExtendedAlbum[]> => {
   const url = new URL("https://ws.audioscrobbler.com/2.0/");
@@ -72,4 +94,4 @@ const getTrackInfo = async (username: string, artist: string, track: string): Pr
   return data;
 };
 
-export { getTopAlbums, getTopArtists, getTopTracks, getTrackInfo };
+export { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks, getTrackInfo };
