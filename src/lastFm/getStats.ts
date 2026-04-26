@@ -30,7 +30,7 @@ const getPlaycounts = async (
   artists: ExtendedArtist[],
   tracks: Track[]
 ): Promise<{ artistsCount: number; tracksCount: number; spinCount: number }> => {
-  if (artists.length === 1000 && tracks.length === 1000) {
+  if (artists.length === 1000 || tracks.length === 1000) {
     const recentTracks = await getRecentTracks(username, range);
     const artistsCount = new Set(recentTracks.map((track) => track.artist["#text"])).size;
     const tracksCount = new Set(recentTracks.map((track) => `${track.name}-${track.artist["#text"]}`)).size;
