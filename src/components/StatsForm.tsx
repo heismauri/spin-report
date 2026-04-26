@@ -46,7 +46,7 @@ const getDateRange = (rangeType: string) => {
     default:
       return getLastWeekRange();
   }
-}
+};
 
 const StatsForm = () => {
   const [loading, setLoading] = useState(false);
@@ -57,7 +57,11 @@ const StatsForm = () => {
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username") as string;
     const service = formData.get("service") as string;
-    const dateRange = getDateRange(formData.get("dateRange") as string);
+    const formDataRange =
+      service === "lastfm" && formData.get("dateRange") === "lastYear"
+        ? "lastMonth"
+        : (formData.get("dateRange") as string);
+    const dateRange = getDateRange(formDataRange);
     console.log("Fetching stats for user:", username);
     setStats(null);
     setLoading(true);
