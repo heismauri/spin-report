@@ -1,4 +1,4 @@
-import { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
+import { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks } from "@/services/lastFm";
 import { ExtendedArtist, Track } from "@/types/lastFmResponses";
 import { TopStats } from "@/types/Stats";
 
