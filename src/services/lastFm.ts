@@ -30,7 +30,7 @@ const getRecentTracks = async (username: string, range: { from: Date; to: Date }
   return data.recenttracks.track;
 };
 
-const getTopAlbums = async (username: string, range: { from: Date; to: Date }): Promise<ExtendedAlbum[]> => {
+const getTopAlbums = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<ExtendedAlbum[]> => {
   const url = new URL("https://ws.audioscrobbler.com/2.0/");
   url.searchParams.set("method", "user.getweeklyalbumchart");
   url.searchParams.set("api_key", process.env.NEXT_PUBLIC_LASTFM_API_KEY || "");
@@ -38,6 +38,7 @@ const getTopAlbums = async (username: string, range: { from: Date; to: Date }): 
   url.searchParams.set("user", username);
   url.searchParams.set("from", Math.floor(range.from.getTime() / 1000).toString());
   url.searchParams.set("to", Math.floor(range.to.getTime() / 1000).toString());
+  url.searchParams.set("limit", top.toString());
   const response = await fetch(url.toString());
   if (!response.ok) {
     throw new Error(`Error fetching top albums: ${await response.text()}`);
@@ -46,7 +47,7 @@ const getTopAlbums = async (username: string, range: { from: Date; to: Date }): 
   return data.weeklyalbumchart.album;
 };
 
-const getTopArtists = async (username: string, range: { from: Date; to: Date }): Promise<ExtendedArtist[]> => {
+const getTopArtists = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<ExtendedArtist[]> => {
   const url = new URL("https://ws.audioscrobbler.com/2.0/");
   url.searchParams.set("method", "user.getweeklyartistchart");
   url.searchParams.set("api_key", process.env.NEXT_PUBLIC_LASTFM_API_KEY || "");
@@ -54,6 +55,7 @@ const getTopArtists = async (username: string, range: { from: Date; to: Date }):
   url.searchParams.set("user", username);
   url.searchParams.set("from", Math.floor(range.from.getTime() / 1000).toString());
   url.searchParams.set("to", Math.floor(range.to.getTime() / 1000).toString());
+  url.searchParams.set("limit", top.toString());
   const response = await fetch(url.toString());
   if (!response.ok) {
     throw new Error(`Error fetching top artists: ${await response.text()}`);
@@ -62,7 +64,7 @@ const getTopArtists = async (username: string, range: { from: Date; to: Date }):
   return data.weeklyartistchart.artist;
 };
 
-const getTopTracks = async (username: string, range: { from: Date; to: Date }): Promise<Track[]> => {
+const getTopTracks = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<Track[]> => {
   const url = new URL("https://ws.audioscrobbler.com/2.0/");
   url.searchParams.set("method", "user.getweeklytrackchart");
   url.searchParams.set("api_key", process.env.NEXT_PUBLIC_LASTFM_API_KEY || "");
@@ -70,6 +72,7 @@ const getTopTracks = async (username: string, range: { from: Date; to: Date }): 
   url.searchParams.set("user", username);
   url.searchParams.set("from", Math.floor(range.from.getTime() / 1000).toString());
   url.searchParams.set("to", Math.floor(range.to.getTime() / 1000).toString());
+  url.searchParams.set("limit", top.toString());
   const response = await fetch(url.toString());
   if (!response.ok) {
     throw new Error(`Error fetching top tracks: ${await response.text()}`);

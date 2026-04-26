@@ -1,6 +1,7 @@
-import { getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
+import { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
 import { TopStats } from "@/types/Stats";
 
+/*
 const getTrackMinutes = async (
   username: string,
   artist: string,
@@ -20,6 +21,15 @@ const getTrackMinutes = async (
     return 0;
   }
 };
+*/
+
+const getPlaycounts = async (username: string, range: { from: Date; to: Date }): Promise<{ artistsCount: number; tracksCount: number, spinCount: number }> => {
+  const recentTracks = await getRecentTracks(username, range);
+  const artistsCount = new Set(recentTracks.map(track => track.artist["#text"])).size;
+  const tracksCount = new Set(recentTracks.map(track => `${track.name}-${track.artist["#text"]}`)).size;
+  const spinCount = recentTracks.length;
+  return { artistsCount, tracksCount, spinCount };
+}
 
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
   const [topAlbums, topArtists, topTracks] = await Promise.all([
@@ -47,16 +57,16 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
     .slice(0, top)
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
   // const minutes = minutesArray.reduce((acc, mins) => acc + mins, 0);
-  const count = topTracks.reduce((acc, track) => acc + parseInt(track.playcount, 10), 0);
+  const { artistsCount, tracksCount, spinCount } = await getPlaycounts(username, range);
 
   return {
     albums,
     artists,
     streams: {
       // minutes,
-      count,
-      artists: topArtists.length,
-      tracks: topTracks.length
+      count: spinCount,
+      artists: artistsCount,
+      tracks: tracksCount
     },
     tracks,
     dateRange: range
