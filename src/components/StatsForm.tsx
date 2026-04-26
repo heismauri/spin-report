@@ -83,18 +83,18 @@ const StatsForm = () => {
     <>
       <form className="flex flex-col gap-4 w-full max-w-md text-xl" onSubmit={handleSubmit}>
         <label className="flex flex-col">
-          <span className="font-medium text-gray-700 dark:text-gray-300">Username</span>
+          <span className="font-medium text-stone-700 dark:text-stone-300">Username</span>
           <input
             type="text"
             name="username"
             placeholder="Enter your username"
-            className="border border-gray-300 dark:border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-gray-200 disabled:text-gray-500"
+            className="border border-stone-300 dark:border-stone-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-stone-200 disabled:text-stone-500 dark:disabled:bg-stone-700 dark:disabled:text-stone-500"
             required
             disabled={loading}
           />
         </label>
         <label className="flex flex-col">
-          <span className="font-medium text-gray-700 dark:text-gray-300">Service</span>
+          <span className="font-medium text-stone-700 dark:text-stone-300">Service</span>
           <div className="flex flex-row gap-4">
             <label className="flex items-center gap-2">
               <input
@@ -103,18 +103,24 @@ const StatsForm = () => {
                 value="statsfm"
                 defaultChecked
                 disabled={loading}
-                className="disabled:text-gray-500"
+                className="accent-purple-500 disabled:text-stone-500"
               />
               stats.fm
             </label>
             <label className="flex items-center gap-2">
-              <input type="radio" name="service" value="lastfm" disabled={loading} className="disabled:text-gray-500" />
+              <input
+                type="radio"
+                name="service"
+                value="lastfm"
+                disabled={loading}
+                className="accent-purple-500 disabled:text-stone-500"
+              />
               Last.fm (Beta)
             </label>
           </div>
         </label>
         <label className="flex flex-col">
-          <span className="font-medium text-gray-700 dark:text-gray-300">Date Range</span>
+          <span className="font-medium text-stone-700 dark:text-stone-300">Date Range</span>
           <div className="flex flex-row gap-4">
             <label className="flex items-center gap-2">
               <input
@@ -123,7 +129,7 @@ const StatsForm = () => {
                 value="lastWeek"
                 defaultChecked
                 disabled={loading}
-                className="disabled:text-gray-500"
+                className="accent-purple-500 disabled:text-stone-500"
               />
               Last week
             </label>
@@ -133,7 +139,7 @@ const StatsForm = () => {
                 name="dateRange"
                 value="lastMonth"
                 disabled={loading}
-                className="disabled:text-gray-500"
+                className="accent-purple-500 disabled:text-stone-500"
               />
               Last month
             </label>
@@ -143,7 +149,7 @@ const StatsForm = () => {
                 name="dateRange"
                 value="lastYear"
                 disabled={loading}
-                className="disabled:text-gray-500"
+                className="accent-purple-500 disabled:text-stone-500"
               />
               Last year
             </label>
@@ -151,7 +157,7 @@ const StatsForm = () => {
         </label>
         <button
           type="submit"
-          className="bg-purple-500 text-white rounded-md p-2 hover:bg-purple-400 transition not-disabled:cursor-pointer disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:opacity-70"
+          className="bg-purple-500 text-white rounded-md p-2 hover:bg-purple-400 transition not-disabled:cursor-pointer disabled:bg-stone-300 dark:disabled:bg-stone-700 disabled:opacity-70"
           disabled={loading}
         >
           Find out about my spins

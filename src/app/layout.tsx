@@ -20,7 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${vt323.className} antialiased`}>{children}</body>
+      <body
+        className={[
+          `${vt323.className} antialiased [font-variant-ligatures:none]`,
+          "text-stone-950 dark:bg-stone-950 dark:text-white"
+        ].join(" ")}
+      >
+        {children}
+      </body>
     </html>
   );
 }

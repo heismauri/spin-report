@@ -52,19 +52,19 @@ const statsCard = ({
       <div className="font-bold text-purple-500">Top 5 tracks:</div>
       <ol className="list-decimal list-inside mb-3 leading-3.5">
         {tracks.slice(0, 5).map((track, index) => (
-          <li key={index}>{track.name} <span className="text-sm text-gray-500">[{track.playcount} plays]</span></li>
+          <li key={index}>{track.name} <span className="text-sm text-stone-500">[{track.playcount} plays]</span></li>
         ))}
       </ol>
       <div className="font-bold text-purple-500">Top 5 artists:</div>
       <ol className="list-decimal list-inside mb-3 leading-3.5">
         {artists.slice(0, 5).map((artist, index) => (
-          <li key={index}>{artist.name} <span className="text-sm text-gray-500">[{artist.playcount} plays]</span></li>
+          <li key={index}>{artist.name} <span className="text-sm text-stone-500">[{artist.playcount} plays]</span></li>
         ))}
       </ol>
       <div className="font-bold text-purple-500">Top 5 albums:</div>
       <ol className="list-decimal list-inside mb-3 leading-3.5">
         {albums.slice(0, 5).map((album, index) => (
-          <li key={index}>{album.name} <span className="text-sm text-gray-500">[{album.playcount} plays]</span></li>
+          <li key={index}>{album.name} <span className="text-sm text-stone-500">[{album.playcount} plays]</span></li>
         ))}
       </ol>
     </div>
