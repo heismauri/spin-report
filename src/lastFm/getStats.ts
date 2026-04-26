@@ -1,4 +1,5 @@
 import { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks, getTrackInfo } from "@/services/lastFm";
+import { ExtendedArtist, Track } from "@/types/lastFmResponses";
 import { TopStats } from "@/types/Stats";
 
 /*
@@ -23,19 +24,30 @@ const getTrackMinutes = async (
 };
 */
 
-const getPlaycounts = async (username: string, range: { from: Date; to: Date }): Promise<{ artistsCount: number; tracksCount: number, spinCount: number }> => {
-  const recentTracks = await getRecentTracks(username, range);
-  const artistsCount = new Set(recentTracks.map(track => track.artist["#text"])).size;
-  const tracksCount = new Set(recentTracks.map(track => `${track.name}-${track.artist["#text"]}`)).size;
-  const spinCount = recentTracks.length;
+const getPlaycounts = async (
+  username: string,
+  range: { from: Date; to: Date },
+  artists: ExtendedArtist[],
+  tracks: Track[]
+): Promise<{ artistsCount: number; tracksCount: number; spinCount: number }> => {
+  if (artists.length === 1000 && tracks.length === 1000) {
+    const recentTracks = await getRecentTracks(username, range);
+    const artistsCount = new Set(recentTracks.map((track) => track.artist["#text"])).size;
+    const tracksCount = new Set(recentTracks.map((track) => `${track.name}-${track.artist["#text"]}`)).size;
+    const spinCount = recentTracks.length;
+    return { artistsCount, tracksCount, spinCount };
+  }
+  const artistsCount = artists.length;
+  const tracksCount = tracks.length;
+  const spinCount = artists.reduce((acc, artist) => acc + parseInt(artist.playcount, 10), 0);
   return { artistsCount, tracksCount, spinCount };
-}
+};
 
 const getStats = async (username: string, range: { from: Date; to: Date }, top = 5): Promise<TopStats> => {
   const [topAlbums, topArtists, topTracks] = await Promise.all([
     getTopAlbums(username, range),
-    getTopArtists(username, range),
-    getTopTracks(username, range)
+    getTopArtists(username, range, 1000),
+    getTopTracks(username, range, 1000)
   ]);
 
   /*
@@ -57,7 +69,7 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
     .slice(0, top)
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
   // const minutes = minutesArray.reduce((acc, mins) => acc + mins, 0);
-  const { artistsCount, tracksCount, spinCount } = await getPlaycounts(username, range);
+  const { artistsCount, tracksCount, spinCount } = await getPlaycounts(username, range, topArtists, topTracks);
 
   return {
     albums,
