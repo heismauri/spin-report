@@ -84,6 +84,9 @@ const StatsForm = () => {
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username") as string;
     const dateRange = getDateRange(selectedRange);
+    if (RESTRICTED_RANGES[service]?.has(selectedRange)) {
+      return alert(`The selected date range is not available for ${service}. Please choose a different range.`);
+    }
     console.log("Fetching stats for user:", username);
     setStats(null);
     setLoading(true);
