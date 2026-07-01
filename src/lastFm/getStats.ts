@@ -1,4 +1,5 @@
 import { getRecentTracks, getTopAlbums, getTopArtists, getTopTracks } from "@/services/lastFm";
+import { getArtistImage } from "@/services/statsFm";
 import { ExtendedArtist, Track } from "@/types/lastFmResponses";
 import { TopStats } from "@/types/Stats";
 
@@ -68,20 +69,23 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
   const tracks = topTracks
     .slice(0, top)
     .map((track) => ({ name: track.name, playcount: parseInt(track.playcount, 10) }));
-  // const minutes = minutesArray.reduce((acc, mins) => acc + mins, 0);
-  const { artistsCount, tracksCount, spinCount } = await getPlaycounts(username, range, topArtists, topTracks);
+
+  const [{ artistsCount, tracksCount, spinCount }, images] = await Promise.all([
+    getPlaycounts(username, range, topArtists, topTracks),
+    Promise.all(artists.map((artist) => getArtistImage(artist.name)))
+  ]);
 
   return {
     albums,
     artists,
     streams: {
-      // minutes,
       count: spinCount,
       artists: artistsCount,
       tracks: tracksCount
     },
     tracks,
-    dateRange: range
+    dateRange: range,
+    images: images.flatMap((img) => (img !== null ? [img] : []))
   };
 };
 
