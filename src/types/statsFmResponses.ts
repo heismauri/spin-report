@@ -68,6 +68,12 @@ export interface Data {
   name: string;
 }
 
+export interface ArtistSearchResult {
+  items: {
+    artists: Artist[];
+  };
+}
+
 export interface Streams {
   items: StreamsItem;
 }

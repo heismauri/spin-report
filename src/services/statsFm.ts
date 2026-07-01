@@ -1,4 +1,4 @@
-import { Albums, Artists, Tracks, Streams } from "@/types/statsFmResponses";
+import { Albums, Artists, Tracks, Streams, ArtistSearchResult } from "@/types/statsFmResponses";
 
 const getTopAlbums = async (username: string, range: { from: Date; to: Date }, limit: number): Promise<Albums> => {
   const response = await fetch(
@@ -44,4 +44,14 @@ const getStreams = async (username: string, range: { from: Date; to: Date }): Pr
   return data;
 };
 
-export { getTopAlbums, getTopArtists, getTopTracks, getStreams };
+const getArtistImage = async (artistName: string): Promise<string | null> => {
+  const url = `https://api.stats.fm/api/v1/search/elastic?query=${encodeURIComponent(artistName)}&type=artist&limit=1`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Error fetching artist image: ${response.statusText}`);
+  }
+  const data: ArtistSearchResult = await response.json();
+  return data.items.artists[0]?.image ?? null;
+};
+
+export { getTopAlbums, getTopArtists, getTopTracks, getStreams, getArtistImage };
