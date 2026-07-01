@@ -29,7 +29,7 @@ const getStats = async (username: string, range: { from: Date; to: Date }, top =
     },
     tracks,
     dateRange: range,
-    images: artists.map((a) => a.image).filter((img) => img !== undefined)
+    images: artists.flatMap((a) => (a.image !== undefined ? [a.image] : []))
   };
 };
 
