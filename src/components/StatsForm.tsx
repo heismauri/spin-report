@@ -61,18 +61,21 @@ const getDateRange = (rangeType: string) => {
   }
 };
 
-const LASTFM_RESTRICTED_RANGES = new Set(["lastHalf", "lastYear"]);
+const RESTRICTED_RANGES: Record<string, Set<string>> = {
+  lastfm: new Set(["lastHalf", "lastYear"]),
+  statsfm: new Set(["lastWeek"])
+};
 
 const StatsForm = () => {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<TopStats | null>(null);
   const [service, setService] = useState("statsfm");
-  const [selectedRange, setSelectedRange] = useState("lastWeek");
+  const [selectedRange, setSelectedRange] = useState("lastMonth");
 
   const handleServiceChange = (newService: string) => {
     setService(newService);
-    if (newService === "lastfm" && LASTFM_RESTRICTED_RANGES.has(selectedRange)) {
-      setSelectedRange("lastWeek");
+    if (RESTRICTED_RANGES[newService]?.has(selectedRange)) {
+      setSelectedRange("lastMonth");
     }
   };
 
@@ -137,7 +140,7 @@ const StatsForm = () => {
                 disabled={loading}
                 className="accent-purple-500 disabled:text-stone-500"
               />
-              Last.fm (Beta)
+              Last.fm
             </label>
           </div>
         </label>
@@ -151,7 +154,7 @@ const StatsForm = () => {
                 value="lastWeek"
                 checked={selectedRange === "lastWeek"}
                 onChange={() => setSelectedRange("lastWeek")}
-                disabled={loading}
+                disabled={loading || service === "statsfm"}
                 className="accent-purple-500 disabled:text-stone-500"
               />
               Last week
