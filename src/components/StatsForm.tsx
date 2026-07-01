@@ -30,6 +30,17 @@ const getLastMonthRange = () => {
   return { from: firstDayOfLastMonth, to: lastDayOfLastMonth };
 };
 
+const getLastHalfRange = () => {
+  const today = new Date();
+  const month = today.getMonth();
+  if (month < 6) {
+    const year = today.getFullYear() - 1;
+    return { from: new Date(year, 6, 1, 0, 0, 0), to: new Date(year, 11, 31, 23, 59, 59, 999) };
+  }
+  const year = today.getFullYear();
+  return { from: new Date(year, 0, 1, 0, 0, 0), to: new Date(year, 5, 30, 23, 59, 59, 999) };
+};
+
 const getLastYearRange = () => {
   const today = new Date();
   const lastYearStart = new Date(today.getFullYear() - 1, 0, 1, 0, 0, 0);
@@ -41,6 +52,8 @@ const getDateRange = (rangeType: string) => {
   switch (rangeType) {
     case "lastYear":
       return getLastYearRange();
+    case "lastHalf":
+      return getLastHalfRange();
     case "lastMonth":
       return getLastMonthRange();
     default:
@@ -142,6 +155,16 @@ const StatsForm = () => {
                 className="accent-purple-500 disabled:text-stone-500"
               />
               Last month
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="dateRange"
+                value="lastHalf"
+                disabled={loading}
+                className="accent-purple-500 disabled:text-stone-500"
+              />
+              Last half
             </label>
             <label className="flex items-center gap-2">
               <input
