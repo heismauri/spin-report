@@ -61,20 +61,26 @@ const getDateRange = (rangeType: string) => {
   }
 };
 
+const LASTFM_RESTRICTED_RANGES = new Set(["lastHalf", "lastYear"]);
+
 const StatsForm = () => {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<TopStats | null>(null);
+  const [service, setService] = useState("statsfm");
+  const [selectedRange, setSelectedRange] = useState("lastWeek");
+
+  const handleServiceChange = (newService: string) => {
+    setService(newService);
+    if (newService === "lastfm" && LASTFM_RESTRICTED_RANGES.has(selectedRange)) {
+      setSelectedRange("lastWeek");
+    }
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username") as string;
-    const service = formData.get("service") as string;
-    const formDataRange =
-      service === "lastfm" && formData.get("dateRange") === "lastYear"
-        ? "lastMonth"
-        : (formData.get("dateRange") as string);
-    const dateRange = getDateRange(formDataRange);
+    const dateRange = getDateRange(selectedRange);
     console.log("Fetching stats for user:", username);
     setStats(null);
     setLoading(true);
@@ -114,7 +120,8 @@ const StatsForm = () => {
                 type="radio"
                 name="service"
                 value="statsfm"
-                defaultChecked
+                checked={service === "statsfm"}
+                onChange={() => handleServiceChange("statsfm")}
                 disabled={loading}
                 className="accent-purple-500 disabled:text-stone-500"
               />
@@ -125,6 +132,8 @@ const StatsForm = () => {
                 type="radio"
                 name="service"
                 value="lastfm"
+                checked={service === "lastfm"}
+                onChange={() => handleServiceChange("lastfm")}
                 disabled={loading}
                 className="accent-purple-500 disabled:text-stone-500"
               />
@@ -140,7 +149,8 @@ const StatsForm = () => {
                 type="radio"
                 name="dateRange"
                 value="lastWeek"
-                defaultChecked
+                checked={selectedRange === "lastWeek"}
+                onChange={() => setSelectedRange("lastWeek")}
                 disabled={loading}
                 className="accent-purple-500 disabled:text-stone-500"
               />
@@ -151,6 +161,8 @@ const StatsForm = () => {
                 type="radio"
                 name="dateRange"
                 value="lastMonth"
+                checked={selectedRange === "lastMonth"}
+                onChange={() => setSelectedRange("lastMonth")}
                 disabled={loading}
                 className="accent-purple-500 disabled:text-stone-500"
               />
@@ -161,7 +173,9 @@ const StatsForm = () => {
                 type="radio"
                 name="dateRange"
                 value="lastHalf"
-                disabled={loading}
+                checked={selectedRange === "lastHalf"}
+                onChange={() => setSelectedRange("lastHalf")}
+                disabled={loading || service === "lastfm"}
                 className="accent-purple-500 disabled:text-stone-500"
               />
               Last half
@@ -171,7 +185,9 @@ const StatsForm = () => {
                 type="radio"
                 name="dateRange"
                 value="lastYear"
-                disabled={loading}
+                checked={selectedRange === "lastYear"}
+                onChange={() => setSelectedRange("lastYear")}
+                disabled={loading || service === "lastfm"}
                 className="accent-purple-500 disabled:text-stone-500"
               />
               Last year
