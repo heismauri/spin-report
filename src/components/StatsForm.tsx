@@ -146,7 +146,7 @@ const StatsForm = () => {
         </label>
         <label className="flex flex-col">
           <span className="font-medium text-stone-700 dark:text-stone-300">Date Range</span>
-          <div className="flex flex-row gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <label className="flex items-center gap-2">
               <input
                 type="radio"
