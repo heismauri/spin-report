@@ -118,7 +118,7 @@ const StatsForm = () => {
         <label className="flex flex-col">
           <span className="font-medium text-stone-700 dark:text-stone-300">Service</span>
           <div className="flex flex-row gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 has-[:disabled]:text-stone-400 has-[:disabled]:cursor-not-allowed">
               <input
                 type="radio"
                 name="service"
@@ -126,11 +126,11 @@ const StatsForm = () => {
                 checked={service === "statsfm"}
                 onChange={() => handleServiceChange("statsfm")}
                 disabled={loading}
-                className="accent-purple-500 disabled:text-stone-500"
+                className="accent-purple-500"
               />
               stats.fm
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 has-[:disabled]:text-stone-400 has-[:disabled]:cursor-not-allowed">
               <input
                 type="radio"
                 name="service"
@@ -138,7 +138,7 @@ const StatsForm = () => {
                 checked={service === "lastfm"}
                 onChange={() => handleServiceChange("lastfm")}
                 disabled={loading}
-                className="accent-purple-500 disabled:text-stone-500"
+                className="accent-purple-500"
               />
               Last.fm
             </label>
@@ -147,7 +147,7 @@ const StatsForm = () => {
         <label className="flex flex-col">
           <span className="font-medium text-stone-700 dark:text-stone-300">Date Range</span>
           <div className="grid grid-cols-3 gap-4">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 has-[:disabled]:text-stone-400 has-[:disabled]:cursor-not-allowed">
               <input
                 type="radio"
                 name="dateRange"
@@ -155,11 +155,11 @@ const StatsForm = () => {
                 checked={selectedRange === "lastWeek"}
                 onChange={() => setSelectedRange("lastWeek")}
                 disabled={loading || service === "statsfm"}
-                className="accent-purple-500 disabled:text-stone-500"
+                className="accent-purple-500"
               />
               Last week
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 has-[:disabled]:text-stone-400 has-[:disabled]:cursor-not-allowed">
               <input
                 type="radio"
                 name="dateRange"
@@ -167,11 +167,11 @@ const StatsForm = () => {
                 checked={selectedRange === "lastMonth"}
                 onChange={() => setSelectedRange("lastMonth")}
                 disabled={loading}
-                className="accent-purple-500 disabled:text-stone-500"
+                className="accent-purple-500"
               />
               Last month
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 has-[:disabled]:text-stone-400 has-[:disabled]:cursor-not-allowed">
               <input
                 type="radio"
                 name="dateRange"
@@ -179,11 +179,11 @@ const StatsForm = () => {
                 checked={selectedRange === "lastHalf"}
                 onChange={() => setSelectedRange("lastHalf")}
                 disabled={loading || service === "lastfm"}
-                className="accent-purple-500 disabled:text-stone-500"
+                className="accent-purple-500"
               />
               Last half
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 has-[:disabled]:text-stone-400 has-[:disabled]:cursor-not-allowed">
               <input
                 type="radio"
                 name="dateRange"
@@ -191,7 +191,7 @@ const StatsForm = () => {
                 checked={selectedRange === "lastYear"}
                 onChange={() => setSelectedRange("lastYear")}
                 disabled={loading || service === "lastfm"}
-                className="accent-purple-500 disabled:text-stone-500"
+                className="accent-purple-500"
               />
               Last year
             </label>
